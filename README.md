@@ -29,3 +29,10 @@ should be read in and stored as the current value.
 Currently nearly nothing is done. However, the included sample echo
 program does work now. It however will never terminate as EOF characters
 are not yet handled.
+
+> Arrows in her eyes  
+> Fear where your heart should be  
+> War in your mind  
+> Shame in your cries
+
+\- Arrows - Foo Fighters
