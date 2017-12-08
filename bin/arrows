@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import argparse
+import arrows_esolang
+
+parser = argparse.ArgumentParser(description='arrows-esolang interpreter')
+parser.add_argument('source', type=str, help='the source file for the interpreter')
+
+args = parser.parse_args()
+arrows_esolang.run(args.source)
