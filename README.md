@@ -26,9 +26,7 @@ starting location of a program.
 when entered from the direction the arrow is facing that one character
 should be read in and stored as the current value.
 
-Currently nearly nothing is done. However, the included sample echo
-program does work now. It however will never terminate as EOF characters
-are not yet handled.
+I am considering re-writing a bit to have two stacks and now RAM, and only subtraction from the register for both stacks.
 
 > Arrows in her eyes  
 > Fear where your heart should be  
