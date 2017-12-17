@@ -33,6 +33,10 @@ def get_path_at_fork(di, register):
     else:
         return lhr(di)
 
+def get_paths_turn(d, x, y, p):
+    """finds which direction we can go from a turn"""
+    return [di for di in DIRS if d[y+di[1]][x+di[0]] and ((di[0] != -p[0]) and (di[1] !=  -p[1]))]
+
 def get_turns(di):
     """get both possible turns for a given vector (left and right)"""
     return (tuple(-x for x in di[::-1]), di[::-1])
@@ -74,7 +78,7 @@ def check_paths(d, xx, yy, di):
             x += p[0]
             y += p[1]
             if is_at_turn(d, x, y, p):
-                p = get_paths(d, x, y)[0]
+                p = get_paths_turn(d, x, y, p)[0]
             if is_at_arrow(d, x, y, p):
                 out.append(pp)
                 break
@@ -96,8 +100,8 @@ def run(f):
     """runs an arrows program"""
     data = load(f)
     x, y = find_start(data)
-    stack = [0]
-    memory = {}
+    lstack = [0]
+    rstack = [0]
     register = 0
     try:
         while in_bounds(x, y, data):
@@ -117,17 +121,19 @@ def run(f):
                     register += 1
                 if is_at_turn(data, x, y, p):
                     pathy = 0
-                    p = get_paths(data, x, y)[0]
-                    if p == (0, 1):
-                        register -= stack.pop()
-                    elif p == (0, -1):
-                        stack.append(register)
-                    elif p == (1, 0):
-                        stack.append(memory.get(register, 0))
+                    p = get_paths_turn(data, x, y, p)[0]
+                    if p == (1, 0):
+                        register -= rstack.pop()
+                    elif p == (0, 1):
+                        rstack.append(register)
                     elif p == (-1, 0):
-                        memory[register] = stack.pop()
-                    if len(stack) == 0:
-                        stack.append(0)
+                        register -= lstack.pop()
+                    elif p == (0, -1):
+                        lstack.append(register)
+                    if len(rstack) == 0:
+                        rstack.append(0)
+                    if len(lstack) == 0:
+                        lstack.append(0)
 
             if is_at_out(data, x, y, p):
                 sys.stdout.write(chr(register))

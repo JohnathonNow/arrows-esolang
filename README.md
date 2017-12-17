@@ -9,10 +9,10 @@ qualities:
 4. Conditionals are encoded as double ended arrows.
 
 The stack operations are:  
-1. Turn downwards: Pop x from the stack, and subtract x from the current value.  
-2. Turn left: Pop x from the stack, and save it at the memory address pointed to by the current value.  
-3. Turn up: Push the current value onto the stack.
-4. Turn right: Push the value stored at the memory address pointed to by the current value onto the stack.  
+1. Turn up: Push the current value onto the left stack.
+2. Turn down: Push the current value onto the right stack.
+3. Turn left: Pop x from the left stack, and subtract x from the current value.  
+4. Turn right: Pop x from the right stack, and subtract x from the current value.  
 
 There are two types of arrow heads:  
 1. Plain arrows. Simply continue forward until you hit another arrow.  
@@ -26,9 +26,7 @@ starting location of a program.
 when entered from the direction the arrow is facing that one character
 should be read in and stored as the current value.
 
-I am considering re-writing a bit to have two stacks and now RAM, and only subtraction from the register for both stacks.
-
-> Arrows in her eyes  
+> Arrows in your eyes  
 > Fear where your heart should be  
 > War in your mind  
 > Shame in your cries
