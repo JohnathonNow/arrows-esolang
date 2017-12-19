@@ -9,6 +9,7 @@ def codegen(visited, name):
     instruction(out, '.global main')
     instruction(out, 'main:')
     instruction(out, 'MOV $0, %rbx')
+    instruction(out, 'JMP .L0')
 
     for key in visited:
         s = visited[key]
