@@ -14,7 +14,7 @@ void init() {
     rstack = malloc(sizeof(int)*rsize);
 }
 
-int lpush(int x) {
+void lpush(int x) {
     if (!lstack) {
         init();
     }
@@ -28,7 +28,7 @@ int lpush(int x) {
     }
 }
 
-int rpush(int x) {
+void rpush(int x) {
     if (!rstack) {
         init();
     }
