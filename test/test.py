@@ -4,8 +4,7 @@ import subprocess
 class TestArrows(unittest.TestCase):
 
     def test_command(self):
-        subprocess.call(['arrowsc', 'samples/helloworld.png'])
-        output = subprocess.check_output(["./a.out"])
+        output = subprocess.check_output(['arrows', 'samples/helloworld.png'])
         self.assertEqual(output, 'HELLO WORLD\n')
 
 
