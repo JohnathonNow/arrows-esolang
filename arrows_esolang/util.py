@@ -114,8 +114,8 @@ def load(f):
     w, h = img.size
     arr = img.load()
 
-    is_black = lambda p: (p > 100) if type(p) is int else p[0] > 100
-    return [[is_black(arr[x, y]) for x in range(w)] for y in range(h)]
+    is_white = lambda p: (p > 100) if type(p) is int else p[0] > 100
+    return [[is_white(arr[x, y]) for x in range(w)] for y in range(h)]
 
 def run(f):
     """runs an arrows program"""
