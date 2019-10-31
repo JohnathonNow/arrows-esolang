@@ -37,15 +37,15 @@ def find_start(d):
                d[y - 0][x - 1:x + 2] == [True, False, False] and \
                d[y + 1][x - 1:x + 2] == [True, True, False]:
                 return (x + 2, y)
-            if d[y-1][x-1:x+2] == [True, True, True]  and \
+            if d[y-1][x-1:x+2] == [True, True, True] and \
                d[y-0][x-1:x+2] == [True, False, True] and \
                d[y+1][x-1:x+2] == [False, False, False]:
                 return (x, y + 2)
-            if d[y-1][x-1:x+2] == [False, True, True]  and \
+            if d[y-1][x-1:x+2] == [False, True, True] and \
                d[y-0][x-1:x+2] == [False, False, True] and \
                d[y+1][x-1:x+2] == [False, True, True]:
                 return (x - 2, y)
-            if d[y-1][x-1:x+2] == [False, False, False]  and \
+            if d[y-1][x-1:x+2] == [False, False, False] and \
                d[y-0][x-1:x+2] == [True, False, True] and \
                d[y+1][x-1:x+2] == [True, True, True]:
                 return (x, y - 2)
@@ -155,7 +155,9 @@ def load(f):
     w, h = img.size
     arr = img.load()
 
-    is_white = lambda p: (p > 100) if type(p) is int else p[0] > 100
+    def is_white(p):
+        return (p > 100) if type(p) is int else p[0] > 100
+
     return [[is_white(arr[x, y]) for x in range(w)] for y in range(h)]
 
 
@@ -166,12 +168,13 @@ def run(f):
     lstack = [0]
     rstack = [0]
     register = 0
+    p = get_paths(data, x, y)[0]
     try:
         while in_bounds(x, y, data):
             pp = get_paths(data, x, y)
             pp = check_paths(data, x, y, pp)
             if len(pp) == 2:
-                p = get_path_at_fork(pp, register)
+                p = get_path_at_fork(p, register)
             else:
                 p = pp[0]
             pathy = 0
@@ -204,7 +207,8 @@ def run(f):
             x, y = get_skip(x, y, p)
             while data[y][x]:
                 if is_at_in(data, x, y, p):
-                    register = ord(sys.stdin.read(1))
+                    c = sys.stdin.read(1) or '\0'
+                    register = ord(c)
                 x += p[0]
                 y += p[1]
             x += p[0]
