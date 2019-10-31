@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-from arrows_esolang.Statement import *
-from arrows_esolang.Action import *
-from arrows_esolang.util import *
-from arrows_esolang.Parser import *
-from arrows_esolang.Codegen import *
-from arrows_esolang.Interpreter import *
+from arrows_esolang.Util import run
+from arrows_esolang.Codegen import codegen
+from arrows_esolang.Parser import parse
+
+__all__ = ['run', 'codegen', 'parse']

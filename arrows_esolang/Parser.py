@@ -1,81 +1,82 @@
-from arrows_esolang.util import *
-from arrows_esolang.Statement import *
-from arrows_esolang.Action import *
+import arrows_esolang.Util as U
+import arrows_esolang.Statement as S
+import arrows_esolang.Action as A
+
 
 def parse(source):
-    data = load(source)
-    x, y = find_start(data)
-    p = get_paths(data, x, y)
-    p = check_paths(data, x, y, p)
+    data = U.load(source)
+    x, y = U.find_start(data)
+    p = U.get_paths(data, x, y)
+    p = U.check_paths(data, x, y, p)
     visited = {}
 
     def _parse(x, y, p, pp=None):
-        if (x, y, p) in visited: 
+        if (x, y, p) in visited:
             return visited[(x, y, p)]
 
         register = 0
-        me = Statement()
+        me = S.Statement()
         visited[(x, y, p)] = me
 
         if not pp:
-            pp = get_paths(data, x, y)
-            pp = check_paths(data, x, y, pp)
+            pp = U.get_paths(data, x, y)
+            pp = U.check_paths(data, x, y, pp)
 
         if len(pp) == 2:
-            me.kind = NodeType.CONDITIONAL
-            me.if_zero = _parse(x, y, rhr(p), [rhr(p)])
-            me.if_else = _parse(x, y, lhr(p), [lhr(p)])
+            me.kind = S.NodeType.CONDITIONAL
+            me.if_zero = _parse(x, y, U.rhr(p), [U.rhr(p)])
+            me.if_else = _parse(x, y, U.lhr(p), [U.lhr(p)])
             return me
 
         p = pp[0]
-        me.kind = NodeType.ACTION
+        me.kind = S.NodeType.ACTION
         register = 0
         pathy = 0
-        while not is_at_arrow(data, x, y, p):
+        while not U.is_at_arrow(data, x, y, p):
             x += p[0]
             y += p[1]
             pathy += 1
             if pathy == 5:
                 pathy = 0
                 register += 1
-            if is_at_turn(data, x, y, p):
+            if U.is_at_turn(data, x, y, p):
                 pathy = 0
-                p = get_paths_turn(data, x, y, p)[0]
+                p = U.get_paths_turn(data, x, y, p)[0]
                 if p == (1, 0):
-                    me.add_action(ActionType.SUBTRACT_RIGHT, register)
+                    me.add_action(A.ActionType.SUBTRACT_RIGHT, register)
                     register = 0
                 elif p == (0, -1):
-                    me.add_action(ActionType.PUSH_LEFT, register)
+                    me.add_action(A.ActionType.PUSH_LEFT, register)
                     register = 0
                 elif p == (-1, 0):
-                    me.add_action(ActionType.SUBTRACT_LEFT, register)
+                    me.add_action(A.ActionType.SUBTRACT_LEFT, register)
                     register = 0
                 elif p == (0, 1):
-                    me.add_action(ActionType.PUSH_RIGHT, register)
+                    me.add_action(A.ActionType.PUSH_RIGHT, register)
                     register = 0
 
-        if is_at_out(data, x, y, p):
-            me.add_action(ActionType.PRINT, register)
+        if U.is_at_out(data, x, y, p):
+            me.add_action(A.ActionType.PRINT, register)
             register = 0
-        x, y = get_skip(x, y, p)
-        if not in_bounds(x, y, data):
-            me.add_action(ActionType.END, register)
+        x, y = U.get_skip(x, y, p)
+        if not U.in_bounds(x, y, data):
+            me.add_action(A.ActionType.END, register)
             register = 0
             return me
         while data[y][x]:
-            if is_at_in(data, x, y, p):
-                me.add_action(ActionType.READ, register)
+            if U.is_at_in(data, x, y, p):
+                me.add_action(A.ActionType.READ, register)
                 register = 0
-            if not in_bounds(x, y, data):
-                me.add_action(ActionType.END, register)
+            if not U.in_bounds(x, y, data):
+                me.add_action(A.ActionType.END, register)
                 register = 0
                 return me
             x += p[0]
             y += p[1]
         x += p[0]
         y += p[1]
-        if not in_bounds(x, y, data):
-            me.add_action(ActionType.END, register)
+        if not U.in_bounds(x, y, data):
+            me.add_action(U.ActionType.END, register)
             register = 0
             return me
         me.add_add(register)

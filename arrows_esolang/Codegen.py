@@ -1,56 +1,57 @@
 import subprocess
-from arrows_esolang.util import *
-from arrows_esolang.Statement import *
-from arrows_esolang.Action import *
+import arrows_esolang.Util as U
+import arrows_esolang.Statement as S
+import arrows_esolang.Action as A
+
 
 def codegen(visited, name):
-    out = get_outfile()
+    out = U.get_outfile()
 
-    instruction(out, '.global main')
-    instruction(out, 'main:')
-    instruction(out, 'MOV $0, %rbx')
-    instruction(out, 'JMP .L0')
+    U.instruction(out, '.global main')
+    U.instruction(out, 'main:')
+    U.instruction(out, 'MOV $0, %rbx')
+    U.instruction(out, 'JMP .L0')
 
     for key in visited:
         s = visited[key]
         label = '.L{}'.format(s.label)
-        instruction(out, '{}:', label)
-        if s.kind == NodeType.CONDITIONAL:
-            instruction(out, 'CMP $0, %rbx')
-            instruction(out, 'JE .L{}', s.if_zero.label)
-            instruction(out, 'JMP .L{}', s.if_else.label)
+        U.instruction(out, '{}:', label)
+        if s.kind == S.NodeType.CONDITIONAL:
+            U.instruction(out, 'CMP $0, %rbx')
+            U.instruction(out, 'JE .L{}', s.if_zero.label)
+            U.instruction(out, 'JMP .L{}', s.if_else.label)
         else:
             for a in s.actions:
-                if a.kind == ActionType.END:
-                    instruction(out, 'MOV %rbx, %rax')
-                    instruction(out, 'JMP .END')
-                elif a.kind == ActionType.ADD:
-                    instruction(out, 'ADD ${}, %rbx', a.value)
-                elif a.kind == ActionType.PUSH_LEFT:
-                    instruction(out, 'MOV %rbx, %rdi')
-                    instruction(out, 'CALL lpush')
-                elif a.kind == ActionType.PUSH_RIGHT:
-                    instruction(out, 'MOV %rbx, %rdi')
-                    instruction(out, 'CALL rpush')
-                elif a.kind == ActionType.SUBTRACT_LEFT:
-                    instruction(out, 'CALL lpop')
-                    instruction(out, 'SUB %rax, %rbx')
-                elif a.kind == ActionType.SUBTRACT_RIGHT:
-                    instruction(out, 'CALL rpop')
-                    instruction(out, 'SUB %rax, %rbx')
-                elif a.kind == ActionType.PRINT:
-                    instruction(out, 'MOV %rbx, %rdi')
-                    instruction(out, 'CALL putchar')
-                elif a.kind == ActionType.READ:
-                    instruction(out, 'CALL libgetchar')
-                    instruction(out, 'MOV %rax, %rbx')
+                if a.kind == A.ActionType.END:
+                    U.instruction(out, 'MOV %rbx, %rax')
+                    U.instruction(out, 'JMP .END')
+                elif a.kind == A.ActionType.ADD:
+                    U.instruction(out, 'ADD ${}, %rbx', a.value)
+                elif a.kind == A.ActionType.PUSH_LEFT:
+                    U.instruction(out, 'MOV %rbx, %rdi')
+                    U.instruction(out, 'CALL lpush')
+                elif a.kind == A.ActionType.PUSH_RIGHT:
+                    U.instruction(out, 'MOV %rbx, %rdi')
+                    U.instruction(out, 'CALL rpush')
+                elif a.kind == A.ActionType.SUBTRACT_LEFT:
+                    U.instruction(out, 'CALL lpop')
+                    U.instruction(out, 'SUB %rax, %rbx')
+                elif a.kind == A.ActionType.SUBTRACT_RIGHT:
+                    U.instruction(out, 'CALL rpop')
+                    U.instruction(out, 'SUB %rax, %rbx')
+                elif a.kind == A.ActionType.PRINT:
+                    U.instruction(out, 'MOV %rbx, %rdi')
+                    U.instruction(out, 'CALL putchar')
+                elif a.kind == A.ActionType.READ:
+                    U.instruction(out, 'CALL libgetchar')
+                    U.instruction(out, 'MOV %rax, %rbx')
             if s.next:
-                instruction(out, 'JMP .L{}', s.next.label)
-    instruction(out, '.END:')
-    instruction(out, 'ret')
+                U.instruction(out, 'JMP .L{}', s.next.label)
+    U.instruction(out, '.END:')
+    U.instruction(out, 'ret')
     out.flush()
 
-    lib = write_library()
+    lib = U.write_library()
 
     subprocess.call(['gcc', out.name, lib.name, '-static', '-o', name])
 

@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 from enum import Enum
-from arrows_esolang.Action import *
+import arrows_esolang.Action as A
 
 __statement_label__ = 0
+
 
 class NodeType(Enum):
     ACTION = 0
     CONDITIONAL = 1
+
 
 class Statement(object):
     def __init__(self):
@@ -21,8 +23,8 @@ class Statement(object):
 
     def add_add(self, register):
         if register > 0:
-            self.actions.append(Action(ActionType.ADD, register))
+            self.actions.append(A.Action(A.ActionType.ADD, register))
 
     def add_action(self, kind, register):
         self.add_add(register)
-        self.actions.append(Action(kind))
+        self.actions.append(A.Action(kind))
