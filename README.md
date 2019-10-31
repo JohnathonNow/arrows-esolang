@@ -1,10 +1,14 @@
 # arrows-esolang
 
-Arrows is meant to be a graphic, stack-based esoteric language with the following
-qualities:
+Arrows is meant to be a graphic, stack-based esoteric language. This package includes two command line utilities, `arrows`, the arrows interpreter, and `arrowsc`, the arrows compiler. For a more detailed description of the language, see my
+[blog post about it](https://johnwesthoff.com/projects/arrows/).
 
+[![Build Status](https://travis-ci.com/JohnathonNow/arrows-esolang.svg?branch=master)](https://travis-ci.com/JohnathonNow/arrows-esolang)  [![PyPI version](https://badge.fury.io/py/arrows-esolang.svg)](https://badge.fury.io/py/arrows-esolang)
+
+
+Arrows has the following properties:
 1. Every operation and value in the language is a drawn arrow.  
-2. Values are encoded as distance traveled along an arrow.  
+2. Values are encoded as distance traveled along an arrow. Every five pixels traveled increments a register by one.  
 3. Stack operations are encoded as turns within an arrow.  
 4. Conditionals are encoded as double ended arrows.
 

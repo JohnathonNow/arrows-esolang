@@ -37,6 +37,18 @@ def find_start(d):
                d[y - 0][x - 1:x + 2] == [True, False, False] and \
                d[y + 1][x - 1:x + 2] == [True, True, False]:
                 return (x + 2, y)
+            if d[y-1][x-1:x+2] == [True, True, True]  and \
+               d[y-0][x-1:x+2] == [True, False, True] and \
+               d[y+1][x-1:x+2] == [False, False, False]:
+                return (x, y + 2)
+            if d[y-1][x-1:x+2] == [False, True, True]  and \
+               d[y-0][x-1:x+2] == [False, False, True] and \
+               d[y+1][x-1:x+2] == [False, True, True]:
+                return (x - 2, y)
+            if d[y-1][x-1:x+2] == [False, False, False]  and \
+               d[y-0][x-1:x+2] == [True, False, True] and \
+               d[y+1][x-1:x+2] == [True, True, True]:
+                return (x, y - 2)
 
 
 def get_paths(d, x, y):
@@ -143,7 +155,8 @@ def load(f):
     w, h = img.size
     arr = img.load()
 
-    return [[arr[x, y][0] > 100 for x in range(w)] for y in range(h)]
+    is_white = lambda p: (p > 100) if type(p) is int else p[0] > 100
+    return [[is_white(arr[x, y]) for x in range(w)] for y in range(h)]
 
 
 def run(f):
