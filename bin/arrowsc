@@ -8,10 +8,18 @@ parser.add_argument('source',
                     help='the source file for the compiler')
 parser.add_argument('-o',
                     type=str,
-                    default='a.out',
+                    default=None,
                     dest='out',
-                    help='the nme of the output file')
+                    help='the name of the output file')
+parser.add_argument('-s',
+                    dest='asm',
+                    action='store_true',
+                    help='output asm instead of an executable')
 
 args = parser.parse_args()
 prog, visited = arrows.parse(args.source)
-arrows.codegen(visited, args.out)
+
+if args.asm:
+    arrows.asm(visited, args.out or 'a.s')
+else:
+    arrows.compile(visited, args.out or 'a.out')

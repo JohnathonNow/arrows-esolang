@@ -1,6 +1,6 @@
 from PIL import Image
-import sys
 import pkg_resources
+import sys
 import tempfile
 
 # the four cardinal directions

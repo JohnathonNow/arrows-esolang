@@ -1,10 +1,11 @@
 import subprocess
+import shutil
 import arrows_esolang.Util as U
 import arrows_esolang.Statement as S
 import arrows_esolang.Action as A
 
 
-def codegen(visited, name):
+def codegen(visited):
     out = U.get_outfile()
 
     U.instruction(out, '.global main')
@@ -51,9 +52,18 @@ def codegen(visited, name):
     U.instruction(out, 'ret')
     out.flush()
 
+    return out
+
+
+def compile(visited, name):
+    out = codegen(visited)
     lib = U.write_library()
-
     subprocess.call(['gcc', out.name, lib.name, '-static', '-o', name])
-
     out.close()
     lib.close()
+
+
+def asm(visited, name):
+    out = codegen(visited)
+    shutil.copyfile(out.name, name)
+    out.close()
