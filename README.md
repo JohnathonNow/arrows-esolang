@@ -3,7 +3,8 @@
 Arrows is meant to be a graphic, stack-based esoteric language. This package includes two command line utilities, `arrows`, the arrows interpreter, and `arrowsc`, the arrows compiler. For a more detailed description of the language, see my
 [blog post about it](https://johnwesthoff.com/projects/arrows/).
 
-[![Build Status](https://travis-ci.com/JohnathonNow/arrows-esolang.svg?branch=master)](https://travis-ci.com/JohnathonNow/arrows-esolang)  [![PyPI version](https://badge.fury.io/py/arrows-esolang.svg)](https://badge.fury.io/py/arrows-esolang)
+[![Build Status](https://github.com/johnathonnow/arrows-esolang/workflows/Build/badge.svg)](https://github.com/JohnathonNow/arrows-esolang/actions)
+[![PyPI version](https://badge.fury.io/py/arrows-esolang.svg)](https://badge.fury.io/py/arrows-esolang)
 
 
 Arrows has the following properties:
