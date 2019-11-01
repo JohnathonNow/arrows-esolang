@@ -10,9 +10,11 @@ class TestArrows(unittest.TestCase):
 
     def test_io(self):
         teststr = b'my name is jeffrey\n'
-        output = subprocess.check_output(['arrows', 'samples/echo.png'],
-                                         input=teststr)
-        self.assertEqual(output, teststr)
+        p = subprocess.Popen(['arrows', 'samples/echo.png'],
+                             stdin=subprocess.PIPE,
+                             stdout=subprocess.PIPE)
+        (out, err) = p.communicate(teststr)
+        self.assertEqual(out, teststr)
 
 
 if __name__ == '__main__':
