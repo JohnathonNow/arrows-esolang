@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='arrows_esolang',
-    version='1.0.0',
+    version='1.0.1',
     author='John Westhoff',
     author_email='johnjwesthoff@gmail.com',
     description=('An esoteric language that uses drawings of arrows.'),
