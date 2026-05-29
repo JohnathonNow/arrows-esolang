@@ -1,5 +1,5 @@
 from PIL import Image
-import pkg_resources
+import os
 import sys
 import tempfile
 
@@ -8,7 +8,9 @@ DIRS = set(((0, 1), (0, -1), (-1, 0), (1, 0)))
 
 
 def write_library():
-    lib = pkg_resources.resource_string(__name__, '/library.c')
+    lib_path = os.path.join(os.path.dirname(__file__), 'library.c')
+    with open(lib_path, 'rb') as f:
+        lib = f.read()
     f = tempfile.NamedTemporaryFile(suffix='.c')
     f.write(lib)
     f.flush()
